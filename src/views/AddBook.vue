@@ -6,7 +6,7 @@
 
             <UploadInput label="صورة الغلاف" />
             <BaseInput v-model="formData.title" type="text" label="اسم الكتاب" />
-            <!-- <BaseInput v-model="" type="text" label="وصف قصير" /> -->
+            <BaseInput v-model="formData.description" type="text" label="وصف قصير" />
             <label class="m-1 text-sm">طلب ولا عرض؟</label>
             <select v-model="formData.status" class="w-full bg-white text-sm h-[27px] outline-none rounded-lg px-1">
                 <option v-for="option in options1" :value="option.value">{{ option.name }}</option>
@@ -29,10 +29,12 @@ import { ref } from 'vue'
 const formData = ref({
     image: '',
     title: '',
-    status: ''
+    status: '',
+    description: '',
 
 })
 
+//example
 const options1 = [
     { name: "Ahmad", value: 1 },
     { name: "Mohammad", value: 2 }
