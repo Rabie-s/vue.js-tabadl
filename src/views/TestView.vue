@@ -1,22 +1,35 @@
 <template>
-    <div class="bg-gray-200 p-4 m-4">
-        <SelectInput v-model="name" label="test" :options="options1" />
-    </div>
-    <h1>{{ name }}</h1>
-
+    <h1>TEst</h1>
 
 </template>
 <script setup>
-import SelectInput from '@/components/SelectInput.vue'
-import { ref,onMounted } from 'vue';
+/* import {useUserStore} from '@/stores/user'
 
-const options1 = [
-    { name: "Ahmad", value: 1 },
-    { name: "Mohammad", value: 2 }
-]
-const name = ref('aa')
-/* onMounted(()=>{
-    console.log(options1[1].name)
-}) */
+const user = useUserStore()
+console.log(user.isAuth) */
+import axios from 'axios';
+
+import { onMounted } from 'vue';
+
+onMounted(() => {
+    axios.get('books', {
+        headers: {
+            Authorization: `Bearer 4|ZLtWb3lNeYSItKyUVCiTErMwOd8cGWrLRSmrY7Qk55e62ba0`,
+            Accept: 'application/json',
+        }
+    })
+        .then(function (response) {
+            // handle success
+            console.log(response);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+})
+
+
+
+
 
 </script>
