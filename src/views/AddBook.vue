@@ -29,7 +29,7 @@
                 <option v-for="option in options1" :value="option.value">{{ option.name }}</option>
             </select>
             <div class="mt-5 flex flex-col items-center gap-y-2">
-                <Button color="blue">نشر</Button>
+                <Button @click="addBook" color="blue">نشر</Button>
             </div>
         </div>
     </div>
@@ -40,6 +40,7 @@
 <script setup>
 import Button from '@/components/Button.vue'
 import { ref } from 'vue'
+import axios from 'axios'
 
 const formData = ref({
     image: '',
@@ -48,6 +49,22 @@ const formData = ref({
     description: '',
 
 })
+
+function addBook() {
+    axios.post('books', {
+        title: "test4",
+        image_path: "book2.jpg",
+        status: "wanted",
+        description: "short desc",
+        user_id: "6"
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
 
 //example
 const options1 = [

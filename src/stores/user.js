@@ -1,23 +1,49 @@
-import { defineStore } from "pinia";
-import axios from 'axios';
+import { defineStore } from "pinia"
+import axios from 'axios'
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
-        name: 'ahmad',
-        isAuth: false
+        user: null,
+        isAuth: false,
+        errors: false,
+        errorMessages: [],
+        successMessage: null
     }),
     actions: {
-        register(name,email,phone_number,password){
-            axios.post('user/register/',{
-                name:name,
-                email:email,
-                phone_number:phone_number,
-                password:password
-            }).then(function(response){
-                console.log(response)
-            }).catch(function(error){
-                console.log(error)
-            })
-        }
+
+        async register(data) {
+            await axios.post('user/register', {
+                name: data.name,
+                email: data.email,
+                phone_number: data.phone_number,
+                password: data.password
+            }).then((response) => {
+                this.successMessage = response.data.success
+                this.isAuth = true
+                this.user = response.data.user
+                this.errors = false
+            }).catch((error) => {
+                this.errors = true
+                this.errorMessages = error.response.data.errors
+            });
+        },
+
+        async login(data) {
+            await axios.post('user/login', {
+                email: data.email,
+                password: data.password
+            }).then((response) => {
+                this.isAuth = true
+                this.user = response.data.user
+            }).catch((error) => {
+                this.errors = true
+                this.errorMessages = error.response.data.errors
+            });
+        },
+
+
     }
+
+
+
 })

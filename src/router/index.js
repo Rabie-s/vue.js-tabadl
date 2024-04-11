@@ -26,6 +26,9 @@ const router = createRouter({
     {
       path: '/add-book',
       name: 'AddBook',
+      meta:{
+        requiresAuth:true
+      },
       component: () => import('@/views/AddBook.vue')
     },
     {
@@ -36,5 +39,6 @@ const router = createRouter({
 
   ]
 })
+
 
 export default router
