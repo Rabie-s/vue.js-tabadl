@@ -38,6 +38,7 @@
                     </RouterLink>
                 </div>
             </Form>
+            <button @click="user.$reset()">click</button>
         </div>
     </div>
 
