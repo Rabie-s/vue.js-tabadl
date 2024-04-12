@@ -3,12 +3,14 @@ import axios from 'axios'
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
-        user: null,
+        userData: null,
+        token:null,
         isAuth: false,
         errors: false,
         errorMessages: [],
         successMessage: null
     }),
+
     actions: {
 
         async register(data) {
@@ -20,7 +22,7 @@ export const useUserStore = defineStore({
             }).then((response) => {
                 this.successMessage = response.data.success
                 this.isAuth = true
-                this.user = response.data.user
+                this.userData = response.data.user
                 this.errors = false
             }).catch((error) => {
                 this.errors = true
@@ -33,8 +35,9 @@ export const useUserStore = defineStore({
                 email: data.email,
                 password: data.password
             }).then((response) => {
+                this.token = response.data.token
                 this.isAuth = true
-                this.user = response.data.user
+                this.userData = response.data.user
             }).catch((error) => {
                 this.errors = true
                 this.errorMessages = error.response.data.errors
@@ -42,8 +45,7 @@ export const useUserStore = defineStore({
         },
 
 
-    }
-
-
+    },
+    persist: true,
 
 })
