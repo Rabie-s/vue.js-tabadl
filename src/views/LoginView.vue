@@ -38,7 +38,6 @@
                     </RouterLink>
                 </div>
             </Form>
-            <button @click="user.$reset()">click</button>
         </div>
     </div>
 
@@ -61,10 +60,8 @@ const schema = yup.object({
 
 
 
-
-async function handelLogin(formData,{ resetForm }) {
+async function handelLogin(formData) {
     await user.login(formData)
-    resetForm()
 }
 
 </script>
