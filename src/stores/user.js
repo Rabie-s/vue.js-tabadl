@@ -36,6 +36,7 @@ export const useUserStore = defineStore({
                 password: data.password
             }).then((response) => {
                 this.token = response.data.token
+                this.errors = false
                 this.isAuth = true
                 this.userData = response.data.user
             }).catch((error) => {
