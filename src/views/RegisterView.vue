@@ -4,7 +4,7 @@
         <div class="bg-gray-200 p-5 m-14 rounded-lg">
             <h1 class="text-2xl text-center font-bold">حساب جديد</h1>
 
-            <Form method="post" @submit="handelRegister" :validation-schema="schema">
+            <form method="post" @submit.prevent="handelRegister">
 
                 <div class="bg-red-500 text-white rounded-lg px-2">
                     <ul v-if="user.errors">
@@ -20,37 +20,38 @@
 
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">الاسم</label>
-                    <Field type="name" name="name" class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
-                    <ErrorMessage class="text-red-500" name="name" />
+                    <input type="name" v-model="formData.name"
+                        class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
+                    <span class="text-red-500" v-for="error in v$.name.$errors">{{ error.$message }}</span>
                 </div>
 
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">الايميل</label>
-                    <Field type="email" name="email" class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
-                    <ErrorMessage class="text-red-500" name="email" />
+                    <input type="email" v-model="formData.email"
+                        class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
+                    <span class="text-red-500" v-for="error in v$.email.$errors">{{ error.$message }}</span>
                 </div>
 
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">رقم الهاتف</label>
-                    <Field type="number" name="phone_number"
+                    <input type="text" v-model="formData.phone_number"
                         class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
-                    <ErrorMessage class="text-red-500" name="phone_number" />
+                    <span class="text-red-500" v-for="error in v$.phone_number.$errors">{{ error.$message }}</span>
                 </div>
 
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">كلمة المرور</label>
-                    <Field type="password" name="password"
+                    <input type="password" v-model="formData.password"
                         class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
-                    <ErrorMessage class="text-red-500" name="password" />
+                    <span class="text-red-500" v-for="error in v$.password.$errors">{{ error.$message }}</span>
                 </div>
 
                 <div class="mt-5 flex flex-col items-center gap-y-2">
-                    <Button color="blue">انشاء الحساب</Button>
+                    <Button type="submit" color="blue">انشاء الحساب</Button>
                     <RouterLink :to="{ name: 'Login' }" class="text-blue-600 hover:text-blue-500 text-sm">تسجل الدخول
                     </RouterLink>
-
                 </div>
-            </Form>
+            </form>
 
         </div>
     </div>
@@ -60,23 +61,34 @@
 
 <script setup>
 import Button from '@/components/Button.vue'
-import { Field, Form, ErrorMessage } from 'vee-validate';
-import * as yup from 'yup';
+import { useVuelidate } from '@vuelidate/core'
+import { required, email,minLength,numeric } from '@vuelidate/validators'
 import { useUserStore } from '@/stores/user.js'
+import { ref } from 'vue';
 const user = useUserStore();
 
+const formData = ref({
+    name: '',
+    email: '',
+    phone_number: '',
+    password: ''
+})
 
-//form validation
-const schema = yup.object({
-    name: yup.string().required().min(3),
-    email: yup.string().required().email(),
-    phone_number: yup.string().required(),
-    password: yup.string().required().min(8),
-});
+//form rules validation
+const rules = {
+    name: { required },
+    email: { required, email },
+    phone_number: { required,numeric },
+    password: { required,minLength:minLength(8) }
+}
 
+const v$ = useVuelidate(rules, formData)
 
-async function handelRegister(formData) {
-    await user.register(formData)
+async function handelRegister() {
+    const result = await v$.value.$validate()
+    if(result){
+        await user.register(formData.value)
+    }
 }
 
 

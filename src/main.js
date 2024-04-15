@@ -10,7 +10,9 @@ import router from './router'
 
 import { useUserStore } from '@/stores/user.js'
 
-
+//vue3-toastify css
+import 'vue3-toastify/dist/index.css';
+//end vue3-toastify css
 
 
 const app = createApp(App)

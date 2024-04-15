@@ -1,10 +1,10 @@
 <template>
 
-    <div class="container mx-auto" :validation-schema="schema">
+    <div class="container mx-auto">
         <div class="bg-gray-200 p-5 m-14 rounded-lg">
             <h1 class="text-2xl text-center font-bold">تسجيل الدخول</h1>
 
-            <Form method="post" @submit="handelLogin" :validation-schema="schema">
+            <form method="post" @submit.prevent="handelLogin">
 
                 <div class="bg-red-500 text-white rounded-lg px-2">
                     <ul v-if="user.errors">
@@ -20,24 +20,25 @@
 
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">الايميل</label>
-                    <Field type="email" name="email" class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
-                    <ErrorMessage class="text-red-500" name="email" />
+                    <input type="email" v-model="formData.email"
+                        class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
+                    <span class="text-red-500" v-for="error in v$.email.$errors">{{ error.$message }}</span>
                 </div>
 
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">كلمة المرور</label>
-                    <Field type="password" name="password"
+                    <input type="password" v-model="formData.password"
                         class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
-                    <ErrorMessage class="text-red-500" name="password" />
+                    <span class="text-red-500" v-for="error in v$.password.$errors">{{ error.$message }}</span>
                 </div>
 
                 <div class="mt-5 flex flex-col items-center gap-y-2">
-                    <Button color="blue">تسجيل الدخول</Button>
+                    <Button type="submit" color="blue">تسجيل الدخول</Button>
                     <RouterLink :to="{ name: 'Register' }" class="text-blue-600 hover:text-blue-500 text-sm">انشاء حساب
                         جديد
                     </RouterLink>
                 </div>
-            </Form>
+            </form>
         </div>
     </div>
 
@@ -46,20 +47,32 @@
 
 <script setup>
 import Button from '@/components/Button.vue';
-import { Field, Form, ErrorMessage } from 'vee-validate';
-import * as yup from 'yup';
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 import { useUserStore } from '@/stores/user.js'
+import { ref } from 'vue';
 const user = useUserStore();
 
-//form validation
-const schema = yup.object({
-    email: yup.string().required().email(),
-    password: yup.string().required().min(8),
-});
+const formData = ref({
+    email: '',
+    password: ''
+})
+//form rules validation
+const rules = {
+    email: { required, email },
+    password: { required }
+}
+const v$ = useVuelidate(rules, formData)
 
 
-async function handelLogin(formData) {
-    await user.login(formData)
+async function handelLogin() {
+    const result = await v$.value.$validate()
+    //if no errors 
+    if(result){
+        await user.login(formData.value)
+    }
+   
+    
 }
 
 </script>
