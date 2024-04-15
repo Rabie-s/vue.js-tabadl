@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import axios from 'axios'
+import router from "@/router";
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
@@ -8,7 +9,6 @@ export const useUserStore = defineStore({
         isAuth: false,
         errors: false,
         errorMessages: [],
-        successMessage: null
     }),
 
     actions: {
@@ -20,10 +20,11 @@ export const useUserStore = defineStore({
                 phone_number: data.phone_number,
                 password: data.password
             }).then((response) => {
-                this.successMessage = response.data.success
-                this.isAuth = true
-                this.userData = response.data.user
                 this.errors = false
+                this.isAuth = true
+                this.token = response.data.token        
+                this.userData = response.data.user
+                router.push({name:'Books'})
             }).catch((error) => {
                 this.errors = true
                 this.errorMessages = error.response.data.errors
@@ -35,10 +36,11 @@ export const useUserStore = defineStore({
                 email: data.email,
                 password: data.password
             }).then((response) => {
-                this.token = response.data.token
                 this.errors = false
                 this.isAuth = true
+                this.token = response.data.token
                 this.userData = response.data.user
+                router.push({name:'Books'})
             }).catch((error) => {
                 this.errors = true
                 this.errorMessages = error.response.data.errors
