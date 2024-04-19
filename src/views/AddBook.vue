@@ -91,7 +91,7 @@ const v$ = useVuelidate(rules, formData)
 
 
 async function submit() {
-    await axios.post('/books', {
+    await axios.post('v1/books', {
         title: formData.value.title,
         image_path: formData.value.image,
         status: formData.value.status,

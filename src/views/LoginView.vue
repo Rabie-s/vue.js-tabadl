@@ -53,6 +53,7 @@ import { useUserStore } from '@/stores/user.js'
 import { ref } from 'vue';
 const user = useUserStore();
 
+
 const formData = ref({
     email: '',
     password: ''
@@ -70,6 +71,7 @@ async function handelLogin() {
     //if no errors 
     if(result){
         await user.login(formData.value)
+
     }
    
     

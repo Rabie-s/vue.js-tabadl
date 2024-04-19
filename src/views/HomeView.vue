@@ -13,7 +13,8 @@
                 href="#">بتدور على كتاب؟</a>
             <a class="w-[135px] h-[35px] bg-red-600 text-white flex justify-center items-center rounded-lg"
                 href="#">عندك كتاب؟</a>
-        </div>
+            <RouterLink :to="{name:'Books'}">Go</RouterLink>
+            </div>
 
 
     </div>

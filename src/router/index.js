@@ -24,10 +24,15 @@ const router = createRouter({
       component: () => import('@/views/BooksView.vue')
     },
     {
+      path: '/book',
+      name: 'Book',
+      component: () => import('@/views/BookView.vue')
+    },
+    {
       path: '/add-book',
       name: 'AddBook',
-      meta:{
-        requiresAuth:true
+      meta: {
+        requiresAuth: true
       },
       component: () => import('@/views/AddBook.vue')
     },
