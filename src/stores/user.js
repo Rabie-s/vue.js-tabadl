@@ -14,33 +14,29 @@ export const useUserStore = defineStore({
 
     actions: {
 
-        register(data) {
+        async register(data) {
 
-            axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie').then(async () => {
-
-                axios.post('register', {
-                    name: data.name,
-                    email: data.email,
-                    phone_number: data.phone_number,
-                    password: data.password
-                }).then((response) => {
-                    this.errors = false
-                    this.isAuth = true
-                    this.token = response.data.token
-                    this.userData = response.data.user
-                    router.push({ name: 'Books' })
-                }).catch((error) => {
-                    this.errors = true
-                    this.errorMessages = error.response.data.errors
-                });
-
+            await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+            await axios.post('register', {
+                name: data.name,
+                email: data.email,
+                phone_number: data.phone_number,
+                password: data.password
+            }).then((response) => {
+                this.errors = false
+                this.isAuth = true
+                this.token = response.data.token
+                this.userData = response.data.user
+                router.push({ name: 'Books' })
+            }).catch((error) => {
+                this.errors = true
+                this.errorMessages = error.response.data.errors
             });
 
         },
 
         async login(data) {
             await axios.get('http://localhost:8000/sanctum/csrf-cookie')
-
             await axios.post('login', {
                 email: data.email,
                 password: data.password
