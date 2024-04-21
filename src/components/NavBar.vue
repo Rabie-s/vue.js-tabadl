@@ -8,13 +8,19 @@
 
         <div v-show="toggleNav">
             <ul class="text-white space-y-2 my-2">
-                <li class="text-base hover:text-black cursor-pointer">الصفحة الرئيسية</li>
-                <li class="text-base hover:text-black cursor-pointer">تسجيل الدخول</li>
+
+                <li class="text-base hover:text-black cursor-pointer">
+                    <RouterLink :to="{ name: 'Home' }">الصفحة الرئيسية</RouterLink>
+                </li>
+
+                <li class="text-base hover:text-black cursor-pointer">
+                    <RouterLink :to="{ name: 'Login' }">تسجيل الدخول</RouterLink>
+                </li>
+
             </ul>
         </div>
 
     </nav>
-
 
 </template>
 

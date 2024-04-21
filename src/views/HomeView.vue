@@ -1,8 +1,11 @@
 <template>
-    <div>
-        <img src="../assets/images/6920933.jpg" alt="" srcset="">
+    <div class="flex justify-center">
+        <img class="w-96 rounded-xl" src="../assets/images/students_09.jpg">
+    </div>
 
-        <p class="text-2xl tracking-wide text-center my-5">موقع تبادل يساعدك على التخلص من الكتب التي لا
+    <div class="container mx-auto">
+
+        <p class="text-2xl tracking-wide text-center my-5">موقع "تبادل" يساعدك على التخلص من الكتب التي لا
             تحتاجها
             ،وبنفس الوقت يساعدك على العثور على الكتب
             التي تحتاجها.
@@ -13,8 +16,7 @@
                 href="#">بتدور على كتاب؟</a>
             <a class="w-[135px] h-[35px] bg-red-600 text-white flex justify-center items-center rounded-lg"
                 href="#">عندك كتاب؟</a>
-            <RouterLink :to="{name:'Books'}">Go</RouterLink>
-            </div>
+        </div>
 
 
     </div>
@@ -22,5 +24,4 @@
 </template>
 
 <script setup>
-import Button from '@/components/Button.vue'
 </script>
