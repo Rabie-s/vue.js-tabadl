@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto">
 
-        <div class="">
+        <div>
             <div class="bg-gray-200 flex justify-center py-2">
                 <img class="h-96 w-full" :src="imagePath + bookData.image_path">
             </div>
