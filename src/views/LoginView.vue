@@ -69,12 +69,10 @@ const v$ = useVuelidate(rules, formData)
 async function handelLogin() {
     const result = await v$.value.$validate()
     //if no errors 
-    if(result){
+    if (result) {
         await user.login(formData.value)
-
     }
-   
-    
+
 }
 
 </script>

@@ -51,14 +51,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user.js'
-import { toast } from 'vue3-toastify';
 
 const user = useUserStore();
 const toggleNav = ref(true)
 
 function handelLogout() {
     user.logout();
-    toast.success('تم نشر تسجيل الخروج بنجاح', { "theme": "colored" })
 }
 
 </script>
