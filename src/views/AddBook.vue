@@ -60,6 +60,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { toast } from 'vue3-toastify';
 import { useUserStore } from '@/stores/user.js'
+import ImageCompressor from 'js-image-compressor'
 const user = useUserStore();
 
 
@@ -72,8 +73,46 @@ const formData = ref({
     description: '',
 })
 //catch a file inside file input
-function onFileChange(e) {
-    formData.value.image = e.target.files[0]
+async function onFileChange(e) {
+    const file = await e.target.files[0]
+    //formData.value.image = file
+    console.log(file)
+    var options = {
+        file: file,
+        quality: 0.6,
+        mimeType: 'image/jpeg',
+        maxWidth: 2000,
+        maxHeight: 2000,
+        width: 1000,
+        height: 1000,
+        minWidth: 500,
+        minHeight: 500,
+        convertSize: Infinity,
+        loose: true,
+        redressOrientation: true,
+
+        // Callback before compression
+        beforeCompress: function (result) {
+            console.log('Image size before compression:', result.size);
+            console.log('mime type:', result.type);
+        },
+
+        // Compression success callback
+        success: function (result) {
+            console.log('Image size after compression:', result.size);
+            console.log('mime type:', result.type);
+            console.log('Actual compression ratio:', ((file.size - result.size) / file.size * 100).toFixed(2) + '%');
+            console.log(result)
+            formData.value.image = result
+        },
+
+        // An error occurred
+        error: function (msg) {
+            console.error(msg);
+        }
+    };
+
+    new ImageCompressor(options);
 }
 
 //form rules validation
@@ -87,10 +126,9 @@ const rules = {
 const v$ = useVuelidate(rules, formData)
 
 
-
-
-
 async function submit() {
+    await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+
     await axios.post('v1/books', {
         title: formData.value.title,
         image_path: formData.value.image,

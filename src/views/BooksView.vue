@@ -3,7 +3,7 @@
         <div class="flex flex-col">
             <div v-for="book in booksData.data" class="bg-gray-200 p-2 m-2 rounded-lg">
                 <div class="flex items-center gap-x-3">
-                    <img class="w-[132px] h-[109px] rounded-lg" :src="imagePath + book.image_path" alt="">
+                    <img class="w-[132px] h-[109px] rounded-lg" :src="imagePath + book.image_path">
                     <div class="w-full flex flex-col gap-y-2">
                         <h2 class="text-lg">{{ book.title }}</h2>
                         <RouterLink :to="{ name: 'Book', params: { id: book.id } }">
@@ -15,7 +15,7 @@
         </div>
 
         <div class=" text-center">
-            <TailwindPagination :data="booksData" @pagination-change-page="getAllBooks"/>
+            <TailwindPagination :data="booksData" @pagination-change-page="getAllBooks" />
         </div>
 
     </div>
@@ -38,8 +38,6 @@ async function getAllBooks(page = 1) {
     }).catch((error) => {
         // handle error
         console.log('error')
-        console.log(error);
-
     });
 }
 
