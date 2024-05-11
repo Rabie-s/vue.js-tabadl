@@ -1,29 +1,25 @@
 <template>
-
     <div class="container mx-auto">
         <div class="bg-gray-200 p-5 m-14 rounded-lg">
             <h1 class="text-2xl text-center font-bold">طلب او عرض كتاب لا تحتاجة</h1>
 
             <form @submit.prevent="submit" method="post">
-
+                <!-- Image Input -->
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">صورة الغلاف</label>
-                    <input ref="inputImage" accept=".png, .jpg, .jpeg" @change="onFileChange" type="file" class="outline outline-none
-                     rounded w-full p-1 file:bg-sky-600
-                      hover:file:bg-sky-500 file:p-2
-                       file:rounded-lg file:text-white
-                        file:outline-none file:border-0
-                         file:cursor-pointer" />
+                    <input ref="inputImage" accept=".png, .jpg, .jpeg" @change="onFileChange" type="file"
+                        class="outline outline-none rounded w-full p-1 file:bg-sky-600 hover:file:bg-sky-500 file:p-2 file:rounded-lg file:text-white file:outline-none file:border-0 file:cursor-pointer" />
                     <span class="text-red-500" v-for="error in v$.image.$errors">{{ error.$message }}</span>
-
                 </div>
 
+                <!-- Title Input -->
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">اسم الكتاب</label>
                     <input v-model="formData.title" class="bg-white text-sm h-[27px] outline-none rounded-lg px-1" />
                     <span class="text-red-500" v-for="error in v$.title.$errors">{{ error.$message }}</span>
                 </div>
 
+                <!-- Description Input -->
                 <div class="flex flex-col">
                     <label class="m-1 text-sm">وصف قصير</label>
                     <input v-model="formData.description"
@@ -31,25 +27,24 @@
                     <span class="text-red-500" v-for="error in v$.description.$errors">{{ error.$message }}</span>
                 </div>
 
-                <label class="m-1 text-sm">طلب ولا عرض؟</label>
-                <select v-model="formData.status" class="w-full bg-white text-sm h-[27px] outline-none rounded-lg px-1">
-                    <option value="1">معروض</option>
-                    <option value="2">مطلوب</option>
-                </select>
-                <span class="text-red-500" v-for="error in v$.status.$errors">{{ error.$message }}</span>
+                <!-- Status Select -->
+                <div class="flex flex-col">
+                    <label class="m-1 text-sm">طلب ولا عرض؟</label>
+                    <select v-model="formData.status"
+                        class="w-full bg-white text-sm h-[27px] outline-none rounded-lg px-1">
+                        <option value="1">معروض</option>
+                        <option value="2">مطلوب</option>
+                    </select>
+                    <span class="text-red-500" v-for="error in v$.status.$errors">{{ error.$message }}</span>
+                </div>
 
-
+                <!-- Submit Button -->
                 <div class="mt-5 flex flex-col items-center gap-y-2">
                     <Button type="submit" color="blue">نشر</Button>
                 </div>
-
-
             </form>
-
         </div>
     </div>
-
-
 </template>
 
 <script setup>
@@ -61,10 +56,8 @@ import axios from 'axios'
 import { toast } from 'vue3-toastify';
 import { useUserStore } from '@/stores/user.js'
 import ImageCompressor from 'js-image-compressor'
+
 const user = useUserStore();
-
-
-
 const inputImage = ref(null)
 const formData = ref({
     image: '',
@@ -72,11 +65,11 @@ const formData = ref({
     status: '',
     description: '',
 })
-//catch a file inside file input
+
+// Catch a file inside file input
 async function onFileChange(e) {
     const file = await e.target.files[0]
-    //formData.value.image = file
-    console.log(file)
+
     var options = {
         file: file,
         quality: 0.6,
@@ -91,18 +84,8 @@ async function onFileChange(e) {
         loose: true,
         redressOrientation: true,
 
-        // Callback before compression
-        beforeCompress: function (result) {
-            console.log('Image size before compression:', result.size);
-            console.log('mime type:', result.type);
-        },
-
         // Compression success callback
         success: function (result) {
-            console.log('Image size after compression:', result.size);
-            console.log('mime type:', result.type);
-            console.log('Actual compression ratio:', ((file.size - result.size) / file.size * 100).toFixed(2) + '%');
-            console.log(result)
             formData.value.image = result
         },
 
@@ -115,7 +98,7 @@ async function onFileChange(e) {
     new ImageCompressor(options);
 }
 
-//form rules validation
+// Form rules validation
 const rules = {
     image: { required },
     title: { required },
@@ -125,9 +108,8 @@ const rules = {
 
 const v$ = useVuelidate(rules, formData)
 
-
 async function submit() {
-    await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+    await axios.get(import.meta.env.VITE_SANCTUM_CSRF_URL)
 
     await axios.post('v1/books', {
         title: formData.value.title,
@@ -159,5 +141,4 @@ function clear() {
     inputImage.value.value = null
     v$.value.$reset()
 }
-
 </script>

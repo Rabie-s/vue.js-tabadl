@@ -1,34 +1,36 @@
-import '@/assets/style.css'
-import { createApp } from 'vue'
-
-import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
-import axios from 'axios';
-import App from './App.vue'
-import router from './router'
-
-import { useUserStore } from '@/stores/user.js'
-
-//vue3-toastify css
+// Import CSS files
+import '@/assets/style.css';
 import 'vue3-toastify/dist/index.css';
-//end vue3-toastify css
 
+// Import Vue and related libraries
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import axios from 'axios';
 
-const app = createApp(App)
-//pinia
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-app.use(pinia)
+// Import components and store
+import App from './App.vue';
+import router from './router';
+import { useUserStore } from '@/stores/user.js';
+
+// Create Vue app instance
+const app = createApp(App);
+
+// Pinia setup for state management
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+app.use(pinia);
+
+// Axios setup for HTTP requests
 const user = useUserStore();
-//end pinia
-
-//axios
-axios.defaults.baseURL = 'http://localhost:8000/api'
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL_API;
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
-axios.defaults.headers.common = { 'Authorization': `Bearer ${user.token}` }
-//end axios
+axios.defaults.headers.common = { 'Authorization': `Bearer ${user.token}` };
 
-app.use(router)
-app.mount('#app')
+// Use Vue Router
+app.use(router);
+
+// Mount the Vue app
+app.mount('#app');
+
