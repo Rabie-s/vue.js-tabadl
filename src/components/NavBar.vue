@@ -18,35 +18,46 @@
 
             <div class="text-sm lg:flex-grow">
 
+                <!-- navigation links  -->
                 <RouterLink :to="{ name: 'Home' }"
                     class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4 cursor-pointer">الصفحة
                     الرئيسيه</RouterLink>
 
                 <RouterLink :to="{ name: 'Books' }"
-                    class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4 cursor-pointer">صفحة الكتب</RouterLink>
+                    class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4 cursor-pointer">صفحة
+                    الكتب</RouterLink>
 
-                <!-- ... other navigation links ... -->
+
+                <template v-if="user.isAuth">
+                    <RouterLink :to="{ name: 'AddBook' }"
+                        class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4 cursor-pointer">
+                        اضافة
+                        كتاب</RouterLink>
+                </template>
+
 
             </div>
 
             <div>
                 <template v-if="!user.isAuth">
                     <RouterLink :to="{ name: 'Login' }"
-                    class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
-                    تسجيل الدخول</RouterLink>
-                <RouterLink :to="{ name: 'Register' }"
-                    class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
-                    حساب جديد</RouterLink>
+                        class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
+                        تسجيل الدخول</RouterLink>
+                    <RouterLink :to="{ name: 'Register' }"
+                        class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
+                        حساب جديد</RouterLink>
                 </template>
 
                 <template v-if="user.isAuth">
 
-                    
-                    <button @click="handelLogout" class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">تسجيل الخروج</button>
+
+                    <button @click="handelLogout"
+                        class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">تسجيل
+                        الخروج</button>
                     <RouterLink :to="{ name: '' }"
-                    class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
-                    {{ user.userData.name }}</RouterLink>
-                    
+                        class="ml-1 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
+                        {{ user.userData.name }}</RouterLink>
+
                 </template>
 
             </div>
