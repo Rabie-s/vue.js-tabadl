@@ -11,28 +11,28 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/LoginView.vue')
+    component: () => import('@/views/auth/LoginView.vue')
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('@/views/RegisterView.vue')
+    component: () => import('@/views/auth/RegisterView.vue')
   },
   {
     path: '/books',
     name: 'Books',
-    component: () => import('@/views/BooksView.vue')
+    component: () => import('@/views/books/BooksView.vue')
   },
   {
     path: '/book/:id',
     name: 'Book',
-    component: () => import('@/views/BookView.vue')
+    component: () => import('@/views/books/BookView.vue')
   },
   {
     path: '/add-book',
     name: 'AddBook',
     meta: { requiresAuth: true }, // Metafield to indicate authentication requirement
-    component: () => import('@/views/AddBook.vue')
+    component: () => import('@/views/books/AddBook.vue')
   },
   {
     path: '/test',
