@@ -90,7 +90,4 @@ async function handelRegister() {
         await user.register(formData.value)
     }
 }
-
-
-
 </script>
