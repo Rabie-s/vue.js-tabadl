@@ -87,7 +87,7 @@ const v$ = useVuelidate(rules, formData)
 async function handelRegister() {
     const result = await v$.value.$validate()
     if(result){
-        await user.register(formData.value)
+        await user.registerResult(formData.value)
     }
 }
 </script>

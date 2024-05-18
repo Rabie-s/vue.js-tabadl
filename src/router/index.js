@@ -19,6 +19,28 @@ const routes = [
     component: () => import('@/views/auth/RegisterView.vue')
   },
   {
+    path: '/profile',
+    name: 'Profile',
+    meta: { requiresAuth: true },
+    component: () => import('@/views/user/ProfileView.vue'),
+    children: [
+
+      {
+        path: 'info',
+        name: 'Info',
+        component: () => import('@/views/user/InformationView.vue')
+      },
+      {
+        path: 'user-books',
+        name: 'UserBooks',
+        component: () => import('@/views/user/UserBooksView.vue')
+      }
+
+
+    ]
+  }
+  ,
+  {
     path: '/books',
     name: 'Books',
     component: () => import('@/views/books/BooksView.vue')
@@ -54,15 +76,18 @@ router.beforeEach(async (to, from, next) => {
   // Redirect to login if route requires authentication and user is not authenticated
   if (to.meta.requiresAuth && !user.isAuth) {
     next('/login')
-  } 
+  }
   // Redirect to home if user is already authenticated and tries to access login or register pages
   else if ((to.name === 'Login' || to.name === 'Register') && user.isAuth) {
     next('/')
-  } 
+  }else if(to.name==='Profile' && !user.isAuth){
+    next('/login')
+  }
   // Otherwise, proceed with navigation
   else {
     next()
   }
+
 })
 
 export default router

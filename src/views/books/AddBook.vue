@@ -52,10 +52,11 @@ import Button from '@/components/Button.vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { ref } from 'vue'
-import axios from 'axios'
+
 import { toast } from 'vue3-toastify';
 import { useUserStore } from '@/stores/user.js'
 import ImageCompressor from 'js-image-compressor'
+import { addBook } from '@/services/bookService';
 
 const user = useUserStore();
 const inputImage = ref(null)
@@ -109,28 +110,20 @@ const rules = {
 const v$ = useVuelidate(rules, formData)
 
 async function submit() {
-    await axios.get(import.meta.env.VITE_SANCTUM_CSRF_URL)
 
-    await axios.post('v1/books', {
-        title: formData.value.title,
-        image_path: formData.value.image,
-        status: formData.value.status,
-        description: formData.value.description,
-        user_id: user.userData.id
-    }, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    }).then(async (response) => {
-        const result = await v$.value.$validate()
-        if (result) {
-            console.log(response.data)
+    const result = await v$.value.$validate()
+
+    if (result) {
+        const addBookResult = await addBook(formData, user.userData.id)
+        if (addBookResult === 201) {
             toast.success('تم نشر الاعلان بنجاح', { "theme": "colored" })
             clear()
+        }else{
+            toast.error('An unknown error occurred.', { "theme": "colored" });
         }
-    }).catch((error) => {
-        console.log(error)
-    });
+    }
+
+
 }
 
 function clear() {

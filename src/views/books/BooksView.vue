@@ -22,7 +22,7 @@
 
         <!-- Book display section -->
         <div class="flex flex-col">
-            <div v-for="book in booksData.data" :key="book.id" class="bg-gray-200 p-2 m-2 rounded-lg">
+            <div v-for="(book,index) in booksData.data" :key="book.id" class="bg-gray-200 p-2 m-2 rounded-lg">
                 <div class="flex items-center gap-x-3">
                     <img class="w-[132px] h-[109px] rounded-lg" :src="imagePath + book.image_path" />
                     <div class="w-full flex flex-col gap-y-2">
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class=" text-center">
+        <div class="text-center my-3">
             <TailwindPagination :data="booksData" @pagination-change-page="getAllBooks" />
         </div>
     </div>
@@ -45,10 +45,11 @@
 <script setup>
 import Button from '@/components/Button.vue';
 import TailwindPagination from '@/components/TailwindPagination/TailwindPagination.vue'
-import axios from 'axios'
-import { onMounted, ref, watchEffect } from 'vue';
+import { fetchBooks } from '@/services/bookService';
 
-const imagePath = 'http://127.0.0.1:8000/images/';
+import { onMounted, ref } from 'vue';
+
+const imagePath = import.meta.env.VITE_IMAGE_PATHS
 
 const searchInput = ref(null)
 const filters = ref({
@@ -64,12 +65,14 @@ function setSearchValue() {
 
 // Function to fetch all books
 async function getAllBooks(page = 1) {
-    try {
-        const response = await axios.get(`v1/books?page=${page}&status=${filters.value.status}&search=${filters.value.search}`);
-        booksData.value = response.data;
-    } catch (error) {
-        console.error('Error fetching books:', error);
+
+    const booksResult = await fetchBooks(page, filters.value.status, filters.value.search)
+    if (booksResult.status === 200) {
+        booksData.value = booksResult.data
+    }else{
+        toast.error('An unknown error occurred.', { "theme": "colored" });
     }
+
 }
 
 // Fetch all books on component mount
@@ -77,8 +80,4 @@ onMounted(() => {
     getAllBooks();
 });
 
-// Watch for changes in the status and fetch books accordingly
-watchEffect(() => {
-    getAllBooks();
-});
 </script>

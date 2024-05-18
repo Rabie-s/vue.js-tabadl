@@ -70,7 +70,7 @@ async function handelLogin() {
     const result = await v$.value.$validate()
     //if no errors 
     if (result) {
-        await user.login(formData.value)
+        await user.loginResult(formData.value)
     }
 
 }
