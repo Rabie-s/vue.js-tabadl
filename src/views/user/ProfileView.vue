@@ -1,13 +1,16 @@
 <template>
 
-    <button @click="toggleSideNav=!toggleSideNav" class="text-left w-full absolute p-5">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-
     <div class="flex">
 
         <div>
-            <SideNav :toggleSideNav="toggleSideNav"/>
+            <SideNav :toggleSideNav="toggleSideNav" />
+        </div>
+
+        <div class="text-left m-2">
+            <button @click="toggleSideNav = !toggleSideNav" class="text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
         </div>
 
         <div class="container mx-auto">
