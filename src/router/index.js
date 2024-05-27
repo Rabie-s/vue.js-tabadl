@@ -61,6 +61,11 @@ const routes = [
     name: 'Test',
     component: () => import('@/views/TestView.vue')
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: ()=>import('@/views/404View.vue')
+  },
 ]
 
 // Create router instance
@@ -80,7 +85,7 @@ router.beforeEach(async (to, from, next) => {
   // Redirect to home if user is already authenticated and tries to access login or register pages
   else if ((to.name === 'Login' || to.name === 'Register') && user.isAuth) {
     next('/')
-  }else if(to.name==='Profile' && !user.isAuth){
+  } else if (to.name === 'Profile' && !user.isAuth) {
     next('/login')
   }
   // Otherwise, proceed with navigation
