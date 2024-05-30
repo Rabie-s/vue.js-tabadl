@@ -13,11 +13,13 @@
             والاستفادة منها بشكل فعّال.
         </p>
 
-        <div class="flex justify-center gap-x-3">
-            <a class="w-[135px] h-[35px] bg-yellow-600 text-white flex justify-center items-center rounded-lg"
-                href="#">بتدور على كتاب؟</a>
-            <a class="w-[135px] h-[35px] bg-red-600 text-white flex justify-center items-center rounded-lg"
-                href="#">عندك كتاب؟</a>
+        <div class="flex justify-center">
+            <Button class=" w-40" color="blue">
+                <RouterLink :to="{ name: 'Books' }">صفحة
+                    الكتب</RouterLink>
+            </Button>
+
+
         </div>
 
 
@@ -26,4 +28,5 @@
 </template>
 
 <script setup>
+import Button from '@/components/Button.vue';
 </script>
